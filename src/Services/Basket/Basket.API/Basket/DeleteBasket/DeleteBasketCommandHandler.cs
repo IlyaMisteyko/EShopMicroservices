@@ -11,12 +11,14 @@
         }
     }
 
-    public class DeleteBasketCommandHandler : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
+    public class DeleteBasketCommandHandler(IBasketRepository repository)
+        : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
     {
         public async Task<DeleteBasketResult> Handle(DeleteBasketCommand command, CancellationToken cancellationToken)
         {
+            var result = await repository.DeleteBusket(command.UserName, cancellationToken);
 
-            return new DeleteBasketResult(true);
+            return new DeleteBasketResult(result);
         }
     }
 }

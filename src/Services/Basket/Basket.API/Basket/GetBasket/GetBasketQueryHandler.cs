@@ -4,11 +4,14 @@
     public record GetBusketResult(ShoppingCart Cart);
 
 
-    public class GetBasketQueryHandler : IQueryHandler<GetBusketQuery, GetBusketResult>
+    public class GetBasketQueryHandler(IBasketRepository repository)
+        : IQueryHandler<GetBusketQuery, GetBusketResult>
     {
         public async Task<GetBusketResult> Handle(GetBusketQuery query, CancellationToken cancellationToken)
         {
-            return new GetBusketResult(new ShoppingCart("123"));
+            var basket = await repository.GetBusket(query.UserName, cancellationToken);
+
+            return new GetBusketResult(basket);
         }
     }
 }
